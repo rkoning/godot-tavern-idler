@@ -1,0 +1,13 @@
+{
+  "roles": [
+    { "id": "bartender", "displayName": "Bartender", "wage": 8,
+      "traits": [ "sturdy" ], "paidService": null },
+    { "id": "masseuse", "displayName": "Masseuse", "wage": 12,
+      "traits": [ "soothing" ],
+      "paidService": { "serviceId": "massage", "price": 15 } }
+  ],
+  "namedHires": [
+    { "id": "old-tom", "displayName": "Old Tom", "role": "bartender", "wage": 20,
+      "traits": [ "legendary", "sturdy" ], "unlockPerk": "perk-old-tom" }
+  ]
+}
