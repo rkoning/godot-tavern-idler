@@ -1,6 +1,6 @@
-# CON-011: Traits API v1.0
+# CON-011: Traits API v1.1
 
-> Status: FROZEN (Gate 4 PASSED 2026-07-13)
+> Status: FROZEN (Gate 4 PASSED 2026-07-13; amended to v1.1 2026-07-13 via `/requirement`, user-approved)
 > Kind: port interface + domain events + data schema
 > Provider: DOM-006 Traits
 > Consumers: app orchestrator (tick + effect routing), DOM-003 (`ApplyEffects` payloads), codex UI adapter, DOM-007 feat router, rule content adapter, persistence adapter
@@ -20,7 +20,7 @@ public interface ITraitsCommands
 {
     IReadOnlyList<IDomainEvent> BeginNight();     // clears episode state
     TraitsTickResult Tick();                      // pulls presence via IPresenceSource (CON-012)
-    IReadOnlyList<IDomainEvent> EndNight();       // closes all episodes → ModifierEnded/…Ended effects
+    IReadOnlyList<IDomainEvent> EndNight();       // closes open episodes internally; emits no effects, returns empty (v1.1)
     CodexSnapshot Capture();                      // lifetime scope (REQ-044)
     void Restore(CodexSnapshot snapshot);
 }
@@ -81,7 +81,8 @@ public sealed record RuleDiscovered(RuleId Rule) : IDomainEvent;                
 { "traits": [
     { "id": "rowdy",   "displayName": "Rowdy",   "description": "Loud and boisterous." },
     { "id": "lawful",  "displayName": "Lawful",  "description": "Upholds the law." },
-    { "id": "outlaw",  "displayName": "Outlaw",  "description": "Wanted by the law." } ],
+    { "id": "outlaw",  "displayName": "Outlaw",  "description": "Wanted by the law." },
+    { "id": "bard",    "displayName": "Bard",    "description": "Plays for the house." } ],
   "rules": [
     { "id": "outlaw-x-lawful", "traitA": "outlaw", "traitB": "lawful",
       "description": "Outlaws and the lawful come to blows.",
@@ -92,20 +93,29 @@ public sealed record RuleDiscovered(RuleId Rule) : IDomainEvent;                
       "description": "Rowdy crowds egg each other on.",
       "reach": "SameRoom", "stacking": "CountScaling",
       "effects": [ { "class": "SpendingMultiplier", "factorPerPair": 1.05, "maxFactor": 1.5 },
-                   { "class": "SatisfactionModifier", "ratePerTickPerPair": 0.001, "maxRate": 0.01 } ] }
+                   { "class": "SatisfactionModifier", "ratePerTickPerPair": 0.001, "maxRate": 0.01 } ] },
+    { "id": "bard-x-rowdy", "traitA": "bard", "traitB": "rowdy",
+      "description": "A bard turns a rowdy house into a chorus.",
+      "reach": "TavernWide", "stacking": "Binary",
+      "effects": [ { "class": "SpendingMultiplier", "factor": 1.1 },
+                   { "class": "SatisfactionModifier", "ratePerTick": 0.002 } ] }
 ] }
 ```
+
+**Continuous-effect params by stacking mode (v1.1).** A continuous effect (`SpendingMultiplier`, `SatisfactionModifier`) authors the param set matching its rule's stacking mode: `Binary` uses the flat, pair-count-independent params `factor` (→ `SpendingMultiplierBegan.Factor`) and `ratePerTick` (→ `SatisfactionModifierBegan.SatisfactionRatePerTick`); `CountScaling` uses `factorPerPair`/`maxFactor` and `ratePerTickPerPair`/`maxRate`. `BehaviorEvent` authors `chance` + `outcome` under either mode.
 
 ## Semantics
 
 - **Episode (REQ-110):** a rule's episode opens when ≥1 qualifying pair (one carrier holding `traitA`, another holding `traitB`, at least one a guest — REQ-040) satisfies the rule's reach: same room, or anywhere if reach is `TavernWide` or either carrier `InBroadcaster` (REQ-047). Episode closes when no qualifying pair remains. `EpisodeId` is unique per run.
-- **Effects timing:** continuous classes emit `…Began` when the episode opens and `…Ended` when it closes (also en masse at `EndNight`); behavior events roll once per episode at open (`IRandom` stream `"traits"`, probability `chance`) — success ⇒ `BehaviorEventTriggered`, failure ⇒ nothing for that episode. Re-entry (new episode) re-rolls.
-- **Stacking (REQ-045):** `Binary` — factors/rates as authored, independent of pair count. `CountScaling` — `factor = min(maxFactor, factorPerPair^pairs)`, `rate = min(maxRate, ratePerTickPerPair × pairs)`; pair-count changes update the active effect via `…Ended` + `…Began` with the same `EpisodeId`? **No — normative:** pair-count changes close and reopen with a NEW `EpisodeId` and do not re-roll behavior events for the same underlying rule while any pair persists (behavior re-roll requires full episode closure).
+- **Effects timing:** continuous classes emit `…Began` when the episode opens and `…Ended` when it closes during Service; behavior events roll once per episode at open (`IRandom` stream `"traits"`, probability `chance`) — success ⇒ `BehaviorEventTriggered`, failure ⇒ nothing for that episode. Re-entry (new episode) re-rolls.
+- **`EndNight` (v1.1, normative):** closes any still-open episodes **internally and emits no effects** (returns an empty list). `EmittedEffect` is not an `IDomainEvent`, so `…Ended` effects are not expressible in `EndNight`'s return type; and CON-016's settlement sequence runs `ITraitsCommands.EndNight()` *after* `IGuestSimCommands.EndNight()`, when no guest remains to receive them. Closure is observable in that the next `BeginNight` reopens qualifying pairs with fresh `EpisodeId`s.
+- **Stacking (REQ-045):** `Binary` — authored `factor` / `ratePerTick`, independent of pair count. `CountScaling` — `factor = min(maxFactor, factorPerPair^pairs)`, `rate = min(maxRate, ratePerTickPerPair × pairs)`. Pairs are **unordered distinct-carrier pairs** (n co-present carriers of a same-trait rule ⇒ C(n,2) pairs).
+- **Episode churn (REQ-110, v1.1, normative):** a change to a rule's qualifying **pair set — count *or* membership** — closes and reopens the episode with a NEW `EpisodeId`, re-emitting continuous effects with the current `Targets`. Behavior events are **not** re-rolled while any pair persists (a re-roll requires full episode closure). Membership is included because REQ-110 requires modifiers to apply *while participants are co-present*: on a count-preserving swap (one guest leaves as another arrives), a count-only rule would leave the departed guest modified and the arrival unmodified.
 - **Targets:** guest participants of qualifying pairs at emission time. `Targets` is a snapshot; DOM-003 applies to those ids only. Employees/rooms/items are participants but never targets (effects land on guests, REQ-042).
 - **Discovery (REQ-111/043):** first `RuleActivated` for a rule ever (lifetime) also emits `RuleDiscovered` and permanently adds the codex entry. Codex survives prestige (REQ-044): `Restore` merges — the prestige sequence never clears it (CON-016).
 - **Guest-participation rule (REQ-040):** enforced at evaluation; a rule between two non-guest carriers never activates.
 - **Ordering:** effects within one `TraitsTickResult` are ordered: all `…Ended` first, then `…Began`, then `BehaviorEventTriggered`.
-- **Schema validation:** trait ids unique; rule ids unique; `traitA`/`traitB` exist; ≤1 effect per class per rule; `chance` ∈ (0,1]; scaling params require `CountScaling`; unknown fields fail-fast. REQ-094 density (~20–30 rules) is content guidance, not validated.
+- **Schema validation:** trait ids unique; rule ids unique; `traitA`/`traitB` exist; ≤1 effect per class per rule; `chance` ∈ (0,1]; scaling params (`factorPerPair`/`maxFactor`/`ratePerTickPerPair`/`maxRate`) require `CountScaling` and binary params (`factor`/`ratePerTick`) require `Binary` — each continuous effect MUST carry the param set matching its rule's stacking mode; unknown fields fail-fast. REQ-094 density (~20–30 rules) is content guidance, not validated.
 - `Capture` legal any phase (codex is tiny and lifetime-scoped); `Tick` legal only during Service.
 
 ## Conformance tests
@@ -116,13 +126,16 @@ public sealed record RuleDiscovered(RuleId Rule) : IDomainEvent;                
 - Reach: same-room only; tavern-wide rule; broadcaster room widening (REQ-047) incl. leaving broadcaster closes episode.
 - REQ-040: staff×staff and room×item pairs never activate; guest×staff does.
 - Stacking: binary invariance vs count-scaling growth with caps; pair-count change ⇒ close/reopen without behavior re-roll.
+- Episode churn (v1.1): count-preserving membership swap ⇒ close/reopen with a new `EpisodeId` and `Targets` naming exactly the currently-qualifying guests; no behavior re-roll.
+- `EndNight` (v1.1): closes open episodes and emits no effects (empty return); the following `BeginNight` reopens with fresh `EpisodeId`s.
 - Behavior roll: seeded chance table — success/failure deterministic; once per episode.
 - Discovery: first activation emits `RuleDiscovered` exactly once ever; codex snapshot round-trip; persists across simulated prestige.
 - Effect ordering within a tick result.
-- Golden-file catalog load + every validation rule.
+- Golden-file catalog load + every validation rule (incl. binary-vs-scaling param symmetry).
 
 ## Change history
 
 | Version | Date | Change | Approved by | Affected tickets |
 |---|---|---|---|---|
 | 1.0 | 2026-07-13 | initial | user | — |
+| 1.1 | 2026-07-13 | Clarification-only — no type signature changes. (a) `EndNight` closes episodes internally and emits no effects (returns empty); v1.0's "…Ended en masse at EndNight" was untypeable (`EmittedEffect` ∉ `IDomainEvent`) and CON-016 runs it after guests leave. (b) Named `Binary` continuous params `factor` / `ratePerTick`; validation made symmetric. (c) Episode churn keys on the qualifying pair **set** (count *or* membership); pairs are unordered distinct-carrier — fixes a count-preserving-swap gap vs REQ-110. Raised during `/implement TKT-005`; approved via `/requirement`. | user | TKT-005 (implements v1.1); TKT-013, TKT-020 (consume; TODO, no rework) |

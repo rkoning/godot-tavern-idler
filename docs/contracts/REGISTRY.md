@@ -14,7 +14,7 @@ Canonical index of every contract. Check here before defining a new contract —
 | CON-008 | Economy Driven Ports | 1.0 | port interface + data schema | DOM-004 (owner) | menu content adapter, venue-modifier bridge | FROZEN |
 | CON-009 | Staffing API | 1.0 | port interface + events | DOM-005 | staffing UI, guests bridge, traits presence bridge, app, persistence | FROZEN |
 | CON-010 | Staffing Driven Ports | 1.0 | port interface | DOM-005 (owner) | structure bridge, progression bridge | FROZEN |
-| CON-011 | Traits API | 1.0 | port interface + events + data schema | DOM-006 | app (effect routing), DOM-003 (effect payloads), codex UI, DOM-007 feat router, rule content adapter, persistence | FROZEN |
+| CON-011 | Traits API | 1.1 | port interface + events + data schema | DOM-006 | app (effect routing), DOM-003 (effect payloads), codex UI, DOM-007 feat router, rule content adapter, persistence | FROZEN |
 | CON-012 | Traits Driven Ports | 1.0 | port interface | DOM-006 (owner) | presence bridge (over DOM-003/005/001/004) | FROZEN |
 | CON-013 | Progression API | 1.0 | port interface + events | DOM-007 | progression UI, app (feats/settlement/prestige), venue/attraction/cost/hire-unlock bridges, persistence | FROZEN |
 | CON-014 | Progression Content Schema | 1.0 | port interface + data schema | DOM-007 (owner) | progression content adapter | FROZEN |

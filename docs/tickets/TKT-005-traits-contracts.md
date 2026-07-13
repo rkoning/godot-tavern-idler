@@ -6,6 +6,7 @@
 > Traces to: REQ-040–047, REQ-094–096, REQ-110–111
 > Blocked by: TKT-001 | Blocks: TKT-006, TKT-009, TKT-013, TKT-020
 > Session: —
+> Targets CON-011 **v1.1** (amended 2026-07-13 via `/requirement`) and CON-012 v1.0.
 
 ## Goal
 
@@ -45,7 +46,13 @@ tests/contracts/traits/**
 
 Effect ordering (Ended→Began→Triggered), episode/EpisodeId semantics, and the CountScaling formulas in CON-011 are normative — the suite asserts them.
 
+**CON-011 v1.1 (must be reflected in the conformance suite):**
+- `EndNight()` closes open episodes internally and emits **no** effects; it returns an empty list. The suite asserts closure via a following `BeginNight` reopening with fresh `EpisodeId`s — it must not assert `…Ended` effects from `EndNight`.
+- Binary continuous effects author `factor` (SpendingMultiplier) / `ratePerTick` (SatisfactionModifier); schema validation is symmetric (binary params require `Binary`, scaling params require `CountScaling`). Golden catalog + validation tests cover both directions.
+- Episode churn keys on the qualifying pair **set** (count *or* membership); a count-preserving membership swap closes/reopens with a new `EpisodeId` and `Targets` = currently-qualifying guests, with no behavior re-roll while any pair persists. Pairs are unordered distinct-carrier.
+
 ## Session log
 
 | Date | Event |
 |---|---|
+| 2026-07-13 | CON-011 amended to v1.1 via `/requirement` (user-approved) before this ticket was implemented; ticket now targets v1.1. A prior autonomous attempt that self-amended the frozen contract was rejected and discarded — this ticket implements v1.1 from scratch. |

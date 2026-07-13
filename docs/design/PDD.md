@@ -342,3 +342,4 @@ Risks:
 | 2026-07-13 | Discovery = first activation (REQ-111) | first activation / witnessed only | user |
 | 2026-07-13 | Milestones visible with a hidden few (REQ-112) | all visible / hidden few / all hidden | user |
 | 2026-07-13 | Prestige any time incl. mid-service; abandoned night unsettled (REQ-113) | prep only / prep+gated / any time | user |
+| 2026-07-13 | `/requirement` — CON-011 → v1.1 (clarification-only, no new REQ): traits `EndNight` emits nothing; `Binary` continuous params named `factor`/`ratePerTick` (symmetric validation); episode churn keys on qualifying pair set (count *or* membership) per REQ-110. Serves REQ-110/045/042 more correctly; folded into TKT-005 | emit nothing / reorder+carry effects · churn on set / per-tick re-target | user |
