@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TavernIdler.App", "src\app\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TavernIdler.Tests", "tests\TavernIdler.Tests.csproj", "{C615C610-53E7-4A51-B3D8-93B90A24D3EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TavernIdler.Adapters.Random", "src\adapters\random\TavernIdler.Adapters.Random.csproj", "{433F8CD6-6C2A-4F77-973F-E39467077330}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +34,14 @@ Global
 		{C615C610-53E7-4A51-B3D8-93B90A24D3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C615C610-53E7-4A51-B3D8-93B90A24D3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C615C610-53E7-4A51-B3D8-93B90A24D3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{433F8CD6-6C2A-4F77-973F-E39467077330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433F8CD6-6C2A-4F77-973F-E39467077330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433F8CD6-6C2A-4F77-973F-E39467077330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433F8CD6-6C2A-4F77-973F-E39467077330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{132ABF3F-BD3D-4AC2-80DC-03C5F5ADB959} = {80C87391-4B90-4EF3-B4EE-62F377D51F80}
 		{5DF32ECD-9EB9-4849-8985-74B57D5C8546} = {80C87391-4B90-4EF3-B4EE-62F377D51F80}
+		{433F8CD6-6C2A-4F77-973F-E39467077330} = {80C87391-4B90-4EF3-B4EE-62F377D51F80}
 	EndGlobalSection
 EndGlobal
