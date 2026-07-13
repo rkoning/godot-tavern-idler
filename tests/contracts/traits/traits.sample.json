@@ -1,0 +1,25 @@
+{
+  "traits": [
+    { "id": "rowdy",  "displayName": "Rowdy",  "description": "Loud and boisterous." },
+    { "id": "lawful", "displayName": "Lawful", "description": "Upholds the law." },
+    { "id": "outlaw", "displayName": "Outlaw", "description": "Wanted by the law." },
+    { "id": "bard",   "displayName": "Bard",   "description": "Plays for the house." }
+  ],
+  "rules": [
+    { "id": "outlaw-x-lawful", "traitA": "outlaw", "traitB": "lawful",
+      "description": "Outlaws and the lawful come to blows.",
+      "reach": "SameRoom", "stacking": "Binary",
+      "effects": [ { "class": "BehaviorEvent", "chance": 0.4,
+                     "outcome": { "kind": "GuestsLeave", "flavorId": "brawl" } } ] },
+    { "id": "rowdy-x-rowdy", "traitA": "rowdy", "traitB": "rowdy",
+      "description": "Rowdy crowds egg each other on.",
+      "reach": "SameRoom", "stacking": "CountScaling",
+      "effects": [ { "class": "SpendingMultiplier", "factorPerPair": 1.05, "maxFactor": 1.5 },
+                   { "class": "SatisfactionModifier", "ratePerTickPerPair": 0.001, "maxRate": 0.01 } ] },
+    { "id": "bard-x-rowdy", "traitA": "bard", "traitB": "rowdy",
+      "description": "A bard turns a rowdy house into a chorus.",
+      "reach": "TavernWide", "stacking": "Binary",
+      "effects": [ { "class": "SpendingMultiplier", "factor": 1.1 },
+                   { "class": "SatisfactionModifier", "ratePerTick": 0.002 } ] }
+  ]
+}
