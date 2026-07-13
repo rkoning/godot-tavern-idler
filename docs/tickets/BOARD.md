@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|---|
 | TKT-001 | Repo scaffold + Kernel & Random contracts | contract-definition | shared kernel (cross-domain) | DONE | — | /implement TKT-001 (2026-07-13) |
 | TKT-002 | Cycle contracts (CON-002) | contract-definition | DOM-002 | TODO | TKT-001 | — |
-| TKT-003 | Structure contracts (CON-003, CON-004) | contract-definition | DOM-001 | TODO | TKT-001 | — |
+| TKT-003 | Structure contracts (CON-003, CON-004) | contract-definition | DOM-001 | DONE | TKT-001 | /implement TKT-003 (2026-07-13) |
 | TKT-004 | Staffing contracts (CON-009, CON-010) | contract-definition | DOM-005 | TODO | TKT-003 | — |
 | TKT-005 | Traits contracts (CON-011, CON-012) | contract-definition | DOM-006 | TODO | TKT-001 | — |
 | TKT-006 | Guests contracts (CON-005, CON-006) | contract-definition | DOM-003 | TODO | TKT-003, TKT-004, TKT-005 | — |
