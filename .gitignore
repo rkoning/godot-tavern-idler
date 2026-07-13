@@ -37,3 +37,6 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Local git worktrees created by Claude Code
+.claude/worktrees/
