@@ -21,7 +21,7 @@
 | TKT-017 | RNG adapter (CON-015 implementation) | implementation | adapters (shared) | DONE | TKT-001 | /implement TKT-017 (2026-07-13) |
 | TKT-018 | App orchestrator (IGameLoop, routing, sequences) | implementation | app layer (cross-domain) | TODO | TKT-009 | — |
 | TKT-019 | In-process bridges (all driven-port implementations) | implementation | adapters (cross-domain) | TODO | TKT-010, TKT-011, TKT-012, TKT-013, TKT-014, TKT-015, TKT-016, TKT-027 | — |
-| TKT-020 | Content adapters + starter-venue content | implementation | adapters (content) | TODO | TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008, TKT-027 | — |
+| TKT-020 | Content adapters + starter-venue content | implementation | adapters (content) | TODO | TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008, TKT-027, TKT-028 | — |
 | TKT-021 | Persistence adapter (CON-017 ISaveStore) | implementation | adapters (persistence) | TODO | TKT-009, TKT-027 | — |
 | TKT-022 | Godot bootstrap (project, GameLoopNode, composition root) | integration | adapters (Godot) | TODO | TKT-017, TKT-018, TKT-019, TKT-020, TKT-021 | — |
 | TKT-023 | Godot render adapters (structure + guests) | integration | adapters (Godot) | TODO | TKT-022 | — |
@@ -29,6 +29,7 @@
 | TKT-025 | Godot HUD, night report, progression & codex UI | integration | adapters (Godot) | TODO | TKT-022 | — |
 | TKT-026 | Headless end-to-end integration + save round-trip + architecture tests | integration | cross-domain | TODO | TKT-017, TKT-018, TKT-019, TKT-020, TKT-021 | — |
 | TKT-027 | Adapter project auto-discovery (build config) | build-config | build / adapters | DONE | TKT-017 | /implement TKT-027 (2026-07-13) |
+| TKT-028 | CON-009 v1.1 staff-content validation (contract-change) | contract-change | DOM-005 | TODO | TKT-004 | — |
 
 ## Parallelization waves
 
@@ -39,7 +40,7 @@ Derived from the dependency DAG + file-ownership audit (2026-07-13, /tickets). E
 | 1 | TKT-001 |
 | 2 | TKT-002  TKT-003  TKT-005  TKT-017 |
 | 3 | TKT-004  TKT-010  TKT-011  TKT-013  TKT-027 |
-| 4 | TKT-006  TKT-012 |
+| 4 | TKT-006  TKT-012  TKT-028 |
 | 5 | TKT-007  TKT-014 |
 | 6 | TKT-008  TKT-015 |
 | 7 | TKT-009  TKT-016  TKT-020 |

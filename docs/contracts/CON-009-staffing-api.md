@@ -1,6 +1,6 @@
-# CON-009: Staffing API v1.0
+# CON-009: Staffing API v1.1
 
-> Status: FROZEN (Gate 4 PASSED 2026-07-13)
+> Status: FROZEN (Gate 4 PASSED 2026-07-13; amended to v1.1 2026-07-13 via `/requirement`, user-approved)
 > Kind: port interface + domain events
 > Provider: DOM-005 Staffing
 > Consumers: staffing UI adapter, guests bridge (CON-006 `IRoomServiceState`), traits presence bridge (CON-012), app orchestrator (wage bill, refusal routing, room-removal routing), persistence adapter
@@ -104,6 +104,7 @@ public sealed record StaffReset() : IDomainEvent;
 - **Wages:** `WageBill()` = every employed employee (assigned or not, refusing or not — refusal doesn't stop wage accrual; REQ-028's refusal is about work, arrears handling lives in CON-007).
 - **Dismiss (REQ-108):** removes from roster immediately; any arrears for that employee remain payable via CON-007 `PayBackPay` (dismissal doesn't erase debt) — wage accrual stops.
 - `Capture` Prep/Settlement only. Single-threaded per CON-016.
+- **Content schema validation (v1.1):** loading `content/staff.json` fails fast on any of — a role or named-hire `id` that is empty or duplicated within its list; a `namedHire.role` naming no defined role; an empty `displayName`, empty named-hire `unlockPerk`, or (when `paidService` is present) empty `paidService.serviceId`; a negative `wage` on any role or named hire; a role or named hire with **zero traits**; a negative `paidService.price`; a trait id on any role or named hire that is **absent from the loaded trait registry** (CON-011); or any unknown/unexpected JSON field. The trait-existence check is cross-file, so validation runs where both catalogs are available (the content adapter). No type-signature change from v1.0.
 
 ## Conformance tests
 
@@ -116,10 +117,11 @@ public sealed record StaffReset() : IDomainEvent;
 - Named hires: locked → `NamedHireLocked`; unlocked (stub CON-010) → hireable once; second `HireNamed` → `NamedHireAlreadyEmployed`.
 - Wage bill contents: assigned + unassigned + refusing all present; dismissed absent.
 - Assignment invariants: maxima enforcement, role acceptance, implicit reassign event pair.
-- Snapshot round-trip: roster/assignments/refusals preserved; content golden-file load + validation rules.
+- Snapshot round-trip: roster/assignments/refusals preserved; content golden-file load + validation rules (v1.1: reject negative wage, zero-trait staff, negative paidService price, empty/duplicate ids, dangling `namedHire.role`, unknown trait ids against a supplied trait registry, and unknown JSON fields).
 
 ## Change history
 
 | Version | Date | Change | Approved by | Affected tickets |
 |---|---|---|---|---|
 | 1.0 | 2026-07-13 | initial | user | — |
+| 1.1 | 2026-07-13 | Added `content/staff.json` validation rules (no type-signature change): `wage ≥ 0`; every role/named-hire has ≥1 trait; `paidService.price ≥ 0`; required fields (`id`, `displayName`, `unlockPerk`, `serviceId` when present) non-empty; unique role/named-hire ids; `namedHire.role` must reference a defined role; trait ids must exist in the trait registry (CON-011, cross-file — validated where both catalogs are available); unknown JSON fields fail-fast. Raised while implementing TKT-004; approved via `/requirement`. | user | TKT-028 (updates the CON-009 conformance suite); TKT-020 (implements loader validation, TODO); TKT-004 (DONE — defined the v1.0 suite; its catalog suite is updated by TKT-028, not reopened) |
