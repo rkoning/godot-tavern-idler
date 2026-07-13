@@ -93,3 +93,5 @@ CONTRACT COMPLIANCE — TKT-017 — 2026-07-13
         untouched. Its CON-015 row already points at tests/contracts/random, which now executes.
 VERDICT: COMPLIANT
 ```
+
+> **2026-07-13 follow-up (TKT-027):** the explicit `Adapters.Random` ProjectReference and the `.sln` entry added here are superseded by the glob auto-discovery in TKT-027 (which removes the explicit ref to avoid a duplicate ProjectReference). Status here unchanged.

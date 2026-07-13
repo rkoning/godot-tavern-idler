@@ -4,7 +4,7 @@
 > Type: implementation
 > Domain: adapters (content)
 > Traces to: REQ-052, REQ-066, REQ-081, REQ-089, REQ-093, REQ-094, REQ-105 (schemas + launch-scope content)
-> Blocked by: TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008 | Blocks: TKT-022, TKT-026
+> Blocked by: TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008, TKT-027 | Blocks: TKT-022, TKT-026
 > Session: —
 
 ## Goal
@@ -34,6 +34,8 @@ src/adapters/content/**
 content/**
 tests/adapters/content/**
 ```
+
+> **Adapter-project convention (2026-07-13 `/requirement`):** creates and owns its own `src/adapters/content/TavernIdler.Adapters.Content.csproj`; must **not** edit `TavernIdler.sln` or `tests/TavernIdler.Tests.csproj` — adapter projects are auto-discovered by the glob from TKT-027 (a Blocked-by).
 
 ## Acceptance criteria
 

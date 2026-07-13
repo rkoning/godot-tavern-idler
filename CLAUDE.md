@@ -45,3 +45,4 @@ A stage's outputs may not be created until `docs/PIPELINE.md` shows the prior ga
 - Use the `contract-compliance` skill (in `.claude/skills/`) before marking any ticket complete.
 - All contract-conformance tests must pass before a ticket is `DONE`. Never weaken a test to make it pass.
 - Update the ticket file (status, notes) and `docs/tickets/BOARD.md` when you start and when you finish.
+- **Adapter projects auto-discover.** Each adapter ticket owns its own project (`src/adapters/<x>/<x>.csproj`) inside its adapter directory; the test project references all `src/domains/**` and `src/adapters/**` projects via an MSBuild glob (established in TKT-027), so **no ticket edits `TavernIdler.sln` or `tests/TavernIdler.Tests.csproj`**. Those shared build files and `.github/workflows/ci.yml` are owned solely by the build-config ticket (TKT-027).

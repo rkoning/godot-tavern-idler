@@ -4,7 +4,7 @@
 > Type: implementation
 > Domain: adapters (persistence)
 > Traces to: REQ-035, REQ-044 (scope split); PDD §4 (local saves + Steam Auto-Cloud)
-> Blocked by: TKT-009 | Blocks: TKT-022, TKT-026
+> Blocked by: TKT-009, TKT-027 | Blocks: TKT-022, TKT-026
 > Session: —
 
 ## Goal
@@ -35,6 +35,8 @@ Only these paths may be created/modified by this ticket's session:
 src/adapters/persistence/**
 tests/adapters/persistence/**
 ```
+
+> **Adapter-project convention (2026-07-13 `/requirement`):** creates and owns its own `src/adapters/persistence/TavernIdler.Adapters.Persistence.csproj`; must **not** edit `TavernIdler.sln` or `tests/TavernIdler.Tests.csproj` — adapter projects are auto-discovered by the glob from TKT-027 (a Blocked-by).
 
 ## Acceptance criteria
 

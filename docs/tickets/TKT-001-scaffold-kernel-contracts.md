@@ -91,3 +91,5 @@ CONTRACT COMPLIANCE — TKT-001 — 2026-07-13
         Consistent; no registry change required by this ticket.
 VERDICT: COMPLIANT
 ```
+
+> **2026-07-13 follow-up (TKT-027):** the "no later ticket edits a csproj/sln" goal is realized repo-wide by an MSBuild glob added to `tests/TavernIdler.Tests.csproj` in TKT-027 (which owns that change). Status here unchanged.

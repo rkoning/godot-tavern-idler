@@ -4,7 +4,7 @@
 > Type: implementation
 > Domain: adapters (cross-domain)
 > Traces to: REQ-004, REQ-008, REQ-024, REQ-057, REQ-058, REQ-061, REQ-063, REQ-087 (cross-domain arrows)
-> Blocked by: TKT-010, TKT-011, TKT-012, TKT-013, TKT-014, TKT-015, TKT-016 | Blocks: TKT-022, TKT-026
+> Blocked by: TKT-010, TKT-011, TKT-012, TKT-013, TKT-014, TKT-015, TKT-016, TKT-027 | Blocks: TKT-022, TKT-026
 > Session: —
 
 ## Goal
@@ -37,6 +37,8 @@ Only these paths may be created/modified by this ticket's session:
 src/adapters/bridges/**
 tests/adapters/bridges/**
 ```
+
+> **Adapter-project convention (2026-07-13 `/requirement`):** creates and owns its own `src/adapters/bridges/TavernIdler.Adapters.Bridges.csproj`; must **not** edit `TavernIdler.sln` or `tests/TavernIdler.Tests.csproj` — adapter projects are auto-discovered by the glob from TKT-027 (a Blocked-by).
 
 ## Acceptance criteria
 
