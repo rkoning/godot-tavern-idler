@@ -13,9 +13,27 @@ coverage*.json
 coverage*.xml
 *.trx
 
-# ── Godot (.NET) — populated from TKT-022 onward ────────────
+# ── /dispatch-wave session logs (per-ticket headless output) ─
+.dispatch/
+
+# ── Godot 4 (.NET) — populated from TKT-022 onward ──────────
+# Godot 4+ engine cache / generated project files
 .godot/
+/android/
+
+# Godot import cache (Godot 3 style; harmless to keep for safety)
 .import/
 *.import
+
+# Export artifacts
+export.cfg
 export_presets.cfg
+*.pck
+
+# Auto-generated translations (from CSV)
+*.translation
+
+# Godot/Mono (.NET) build + crash artifacts
 .mono/
+data_*/
+mono_crash.*.json
