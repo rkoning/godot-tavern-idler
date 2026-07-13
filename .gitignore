@@ -1,0 +1,21 @@
+# ── .NET build output ───────────────────────────────────────
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+.vs/
+
+# ── Test / coverage artifacts ───────────────────────────────
+[Tt]est[Rr]esults/
+coverage*.json
+coverage*.xml
+*.trx
+
+# ── Godot (.NET) — populated from TKT-022 onward ────────────
+.godot/
+.import/
+*.import
+export_presets.cfg
+.mono/
