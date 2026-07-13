@@ -18,7 +18,7 @@
 | TKT-014 | Guests domain implementation (agent simulation) | implementation | DOM-003 | TODO | TKT-002, TKT-006 | — |
 | TKT-015 | Economy domain implementation (ledger + settlement) | implementation | DOM-004 | TODO | TKT-002, TKT-007 | — |
 | TKT-016 | Progression domain implementation (milestones, shop, prestige, venues) | implementation | DOM-007 | TODO | TKT-002, TKT-008 | — |
-| TKT-017 | RNG adapter (CON-015 implementation) | implementation | adapters (shared) | TODO | TKT-001 | — |
+| TKT-017 | RNG adapter (CON-015 implementation) | implementation | adapters (shared) | DONE | TKT-001 | /implement TKT-017 (2026-07-13) |
 | TKT-018 | App orchestrator (IGameLoop, routing, sequences) | implementation | app layer (cross-domain) | TODO | TKT-009 | — |
 | TKT-019 | In-process bridges (all driven-port implementations) | implementation | adapters (cross-domain) | TODO | TKT-010, TKT-011, TKT-012, TKT-013, TKT-014, TKT-015, TKT-016 | — |
 | TKT-020 | Content adapters + starter-venue content | implementation | adapters (content) | TODO | TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008 | — |

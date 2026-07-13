@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\domains\TavernIdler.Domains.csproj" />
+    <ProjectReference Include="..\src\adapters\random\TavernIdler.Adapters.Random.csproj" />
   </ItemGroup>
 
 </Project>
