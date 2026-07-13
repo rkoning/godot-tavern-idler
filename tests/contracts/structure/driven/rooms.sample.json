@@ -1,0 +1,46 @@
+{
+  "rooms": [
+    {
+      "id": "taproom",
+      "displayName": "Tap Room",
+      "minArea": 6,
+      "maxArea": 24,
+      "optimumArea": 12,
+      "efficiencyFalloffPerCell": 0.04,
+      "minEfficiency": 0.4,
+      "capacityPerCell": 1.5,
+      "buildCost": 200,
+      "nightlyUpkeep": 10,
+      "tiers": [
+        { "upgradeCost": 0, "capacityMultiplier": 1.0, "serviceSpeedMultiplier": 1.0, "staffingMaxOverrides": [] },
+        { "upgradeCost": 500, "capacityMultiplier": 1.5, "serviceSpeedMultiplier": 1.2,
+          "staffingMaxOverrides": [ { "role": "barmaid", "min": 1, "max": 5 } ] }
+      ],
+      "services": [ { "serviceId": "drink", "kind": "MenuConsumption", "baseDurationTicks": 40, "entryFee": null } ],
+      "staffing": [ { "role": "bartender", "min": 1, "max": 1 }, { "role": "barmaid", "min": 1, "max": 3 } ],
+      "traits": [ "rowdy-friendly" ],
+      "broadcaster": false,
+      "requiresTerrainFeature": null
+    },
+    {
+      "id": "vault",
+      "displayName": "Treasure Vault",
+      "minArea": 4,
+      "maxArea": 9,
+      "optimumArea": 6,
+      "efficiencyFalloffPerCell": 0.05,
+      "minEfficiency": 0.5,
+      "capacityPerCell": 0.5,
+      "buildCost": 2000,
+      "nightlyUpkeep": 50,
+      "tiers": [
+        { "upgradeCost": 0, "capacityMultiplier": 1.0, "serviceSpeedMultiplier": 1.0, "staffingMaxOverrides": [] }
+      ],
+      "services": [ { "serviceId": "vault-entry", "kind": "RoomEntry", "baseDurationTicks": 60, "entryFee": 25 } ],
+      "staffing": [ { "role": "guard", "min": 1, "max": 2 } ],
+      "traits": [ "prestigious" ],
+      "broadcaster": true,
+      "requiresTerrainFeature": null
+    }
+  ]
+}
