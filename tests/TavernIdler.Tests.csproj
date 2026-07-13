@@ -20,9 +20,15 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <!-- Auto-discovery (TKT-027): reference every domain and adapter project by glob so a new
+       adapter ticket only adds its own src/adapters/<x>/<x>.csproj and never edits this file or
+       the .sln. The Godot project is excluded (its Godot SDK build is handled separately in
+       TKT-022). Building this project (a .sln member) transitively builds the whole non-Godot
+       graph, so CI's solution build covers newly-added adapters without .sln edits. -->
   <ItemGroup>
-    <ProjectReference Include="..\src\domains\TavernIdler.Domains.csproj" />
-    <ProjectReference Include="..\src\adapters\random\TavernIdler.Adapters.Random.csproj" />
+    <ProjectReference Include="..\src\domains\**\*.csproj" />
+    <ProjectReference Include="..\src\adapters\**\*.csproj"
+                      Exclude="..\src\adapters\godot\**\*.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@
 | TKT-024 | Godot prep/management UI (build, stock, hire/assign) | integration | adapters (Godot) | TODO | TKT-022 | — |
 | TKT-025 | Godot HUD, night report, progression & codex UI | integration | adapters (Godot) | TODO | TKT-022 | — |
 | TKT-026 | Headless end-to-end integration + save round-trip + architecture tests | integration | cross-domain | TODO | TKT-017, TKT-018, TKT-019, TKT-020, TKT-021 | — |
-| TKT-027 | Adapter project auto-discovery (build config) | build-config | build / adapters | TODO | TKT-017 | — |
+| TKT-027 | Adapter project auto-discovery (build config) | build-config | build / adapters | DONE | TKT-017 | /implement TKT-027 (2026-07-13) |
 
 ## Parallelization waves
 
