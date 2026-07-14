@@ -14,7 +14,7 @@
 | TKT-010 | Cycle domain implementation (NightCycle FSM) | implementation | DOM-002 | DONE | TKT-002 | — |
 | TKT-011 | Structure domain implementation (Tavern aggregate) | implementation | DOM-001 | TODO | TKT-002, TKT-003 | — |
 | TKT-012 | Staffing domain implementation (Roster) | implementation | DOM-005 | TODO | TKT-002, TKT-004 | — |
-| TKT-013 | Traits domain implementation (rule engine) | implementation | DOM-006 | TODO | TKT-002, TKT-005 | — |
+| TKT-013 | Traits domain implementation (rule engine) | implementation | DOM-006 | DONE | TKT-002, TKT-005 | /implement TKT-013 (2026-07-13) |
 | TKT-014 | Guests domain implementation (agent simulation) | implementation | DOM-003 | TODO | TKT-002, TKT-006 | — |
 | TKT-015 | Economy domain implementation (ledger + settlement) | implementation | DOM-004 | TODO | TKT-002, TKT-007 | — |
 | TKT-016 | Progression domain implementation (milestones, shop, prestige, venues) | implementation | DOM-007 | TODO | TKT-002, TKT-008 | — |
