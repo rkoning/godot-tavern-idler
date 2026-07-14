@@ -3,6 +3,13 @@
 > Date: 2026-07-13
 > Status: APPROVED (user, 2026-07-13)
 > Kind: harness tooling (not part of the game design→implementation pipeline)
+> Amended 2026-07-13 (hardening, HEV-002/004/005): worktrees now live under the gitignored
+> in-repo `.claude/worktrees/tkt-###` (not sibling `..\ti-tkt###`); only `implementation` /
+> `integration` / `build-config` tickets are auto-dispatched — `contract-definition` /
+> `contract-change` are held for interactive `/implement`; the dispatch prompt hard-scopes writes
+> to the ticket's ownership and forbids frozen-contract / cross-ticket edits and `/requirement`;
+> the report runs a per-branch pre-merge governance sweep flagging out-of-ownership or
+> frozen-doc edits. The command file is the source of truth for these details.
 
 ## Purpose
 
