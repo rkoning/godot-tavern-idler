@@ -11,7 +11,7 @@
 | TKT-007 | Economy contracts (CON-007, CON-008) | contract-definition | DOM-004 | TODO | TKT-003, TKT-006 | — |
 | TKT-008 | Progression contracts (CON-013, CON-014) | contract-definition | DOM-007 | TODO | TKT-003, TKT-006, TKT-007 | — |
 | TKT-009 | App & Save contracts (CON-016, CON-017) | contract-definition | app layer (cross-domain) | TODO | TKT-002, TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008 | — |
-| TKT-010 | Cycle domain implementation (NightCycle FSM) | implementation | DOM-002 | TODO | TKT-002 | — |
+| TKT-010 | Cycle domain implementation (NightCycle FSM) | implementation | DOM-002 | DONE | TKT-002 | — |
 | TKT-011 | Structure domain implementation (Tavern aggregate) | implementation | DOM-001 | TODO | TKT-002, TKT-003 | — |
 | TKT-012 | Staffing domain implementation (Roster) | implementation | DOM-005 | TODO | TKT-002, TKT-004 | — |
 | TKT-013 | Traits domain implementation (rule engine) | implementation | DOM-006 | TODO | TKT-002, TKT-005 | — |
