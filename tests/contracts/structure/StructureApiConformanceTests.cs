@@ -241,10 +241,13 @@ public abstract class StructureApiConformanceTests
     {
         var h = Harness(new[] { Plain("taproom") });
         PlaceOk(h, "taproom", new GridRect(0, 0, 2, 1));
-        // Two stacked room cells (no stair): no vertical edge.
-        PlaceOk(h, "taproom", new GridRect(0, 1, 2, 1));              // will be inactive/disconnected, still built
+        // Build the stair column FIRST so the upper room is reachable when placed — CON-003 rejects a
+        // supported-but-unreachable placement with Disconnected (validation order, first failure wins),
+        // so it cannot be PlaceOk'd before a route exists. (TKT-029 fix.)
         Ok(h.Commands.BuildCirculation(CirculationKind.Stair, new CellCoord(2, 0)));
         Ok(h.Commands.BuildCirculation(CirculationKind.Stair, new CellCoord(2, 1)));
+        // Two stacked ROOM cells have no stair between them: no room↔room vertical edge.
+        PlaceOk(h, "taproom", new GridRect(0, 1, 2, 1));
         var g = h.Queries.Graph;
         Assert.DoesNotContain(new CellCoord(0, 1), g.Neighbors(new CellCoord(0, 0)));   // room↔room vertical: none
         Assert.Contains(new CellCoord(2, 1), g.Neighbors(new CellCoord(2, 0)));         // stair↔stair vertical
