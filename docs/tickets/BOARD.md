@@ -30,7 +30,7 @@
 | TKT-026 | Headless end-to-end integration + save round-trip + architecture tests | integration | cross-domain | TODO | TKT-017, TKT-018, TKT-019, TKT-020, TKT-021 | — |
 | TKT-027 | Adapter project auto-discovery (build config) | build-config | build / adapters | DONE | TKT-017 | /implement TKT-027 (2026-07-13) |
 | TKT-028 | CON-009 v1.1 staff-content validation (contract-change) | contract-change | DOM-005 | TODO | TKT-004 | — |
-| TKT-029 | Fix contradictory CON-003 conformance test (bug) | bug | DOM-001 | IN PROGRESS | — | /bug (2026-07-13) |
+| TKT-029 | Fix contradictory CON-003 conformance test (bug) | bug | DOM-001 | DONE | — | /bug (2026-07-13) |
 
 ## Parallelization waves
 
