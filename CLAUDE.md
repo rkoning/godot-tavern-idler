@@ -58,3 +58,11 @@ This project is developed on **Windows** with **PowerShell (5.1)** as the primar
 - No POSIX tools like `printf`, `cat <<`, `/dev/null`, forward-slash-only paths. Use PowerShell equivalents (`Out-File`, `$null`, `Join-Path`, etc.).
 - For multi-line strings (e.g. commit messages) use a here-string `@'...'@` written to a file, then `git commit -F <file>`. Note `Out-File -Encoding utf8` adds a BOM; use `utf8NoBOM` (PS 6+) or `[IO.File]::WriteAllText(...)` if a clean file is needed.
 - Paths use `K:\Projects\godot-tavern-idler\...` (backslashes) or forward slashes where the tool accepts them — but stay Windows-native.
+
+## Git — commit/push policy (OVERRIDES the global no-commit rule)
+
+In **this repository only**, the user's global "never commit or push" rule does NOT apply. Instead:
+
+- **Always commit changes** — after completing work, commit it. Do not leave changes sitting unstaged/uncommitted waiting for the user.
+- **You MAY always push to any non-`main` branch** without asking.
+- **`main` is protected:** the ONLY actions that require explicit user input are **merging into `main`** and **pushing to `main`**. Never do either without the user's go-ahead.
