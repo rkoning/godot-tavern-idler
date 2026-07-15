@@ -5,13 +5,19 @@ argument-hint: "[wave number, optional]"
 
 # /dispatch-wave — Parallel wave dispatcher
 
-You are the **dispatcher**. For the target wave, you launch one real, isolated `claude`
-session per **auto-dispatchable** eligible ticket — each in its own git worktree/branch, running
-`/implement` in the background — then monitor and report. You do **not** implement any ticket,
-merge, or push.
+You are the **dispatcher**. For the target wave, you first **plan and validate** every candidate
+ticket *with the user present* (§3), then launch one real, isolated `claude` session per
+**validated-clean** ticket — each in its own git worktree/branch, running `/implement` in the
+background — then monitor and report. You do **not** implement any ticket, merge, or push.
+
+**Plan then dispatch (HEV-006):** never fan out headless agents on tickets whose requirements
+haven't been validated. A headless session has no human to ask, so every missing requirement,
+ambiguous acceptance criterion, or open issue must be surfaced and resolved *before* dispatch — not
+discovered inside an isolated worktree where it can only stall, guess, or self-BLOCK.
 
 Design of record: `docs/superpowers/specs/2026-07-13-dispatch-wave-design.md`.
-Hardened 2026-07-13 for HEV-002 (sandbox + ticket-type gating) and HEV-005 (worktree location).
+Hardened 2026-07-13 for HEV-002 (sandbox + ticket-type gating) and HEV-005 (worktree location);
+2026-07-15 for HEV-006 (pre-dispatch plan + interactive requirement validation).
 
 Argument `$ARGUMENTS` is the wave number, or empty (auto-detect).
 
@@ -44,7 +50,51 @@ Argument `$ARGUMENTS` is the wave number, or empty (auto-detect).
 4. If zero auto-dispatchable tickets, report the per-ticket reasons (incl. any held-for-interactive)
    and stop.
 
-## 3. Prepare a worktree per auto-dispatchable ticket (create-if-missing, never clobber)
+## 3. Plan & validate every candidate — interactively, before any fan-out (HEV-006)
+
+This stage runs **in the main interactive session with the user present**. Nothing here writes to a
+worktree or dispatches an agent. Its job is to catch missing/incomplete requirements *now*, while a
+human can answer, instead of inside a headless session that can only stall or self-BLOCK.
+
+1. **Produce a change plan per auto-dispatchable ticket.** For each one, read the ticket and every
+   contract / requirement / design doc it references, and produce a **read-only** plan covering:
+   - every file the ticket will create or modify (must stay within its File Ownership block);
+   - the contracts/ports it touches and the tests it will add;
+   - **every gap:** missing or incomplete requirements, ambiguous or untestable acceptance
+     criteria, unresolved open questions, and any issue that would make a headless run guess.
+
+   For a large wave you may fan out one **read-only planning agent per ticket** in parallel to build
+   these plans faster. Planning agents get a read-only allowlist only — **no** worktree, no
+   `Edit`/`Write`, no dispatch:
+
+   ```
+   --allowedTools "Read" "Glob" "Grep" "Skill" "Task"
+   ```
+
+   Each planning agent returns its plan + gap list as text; it changes nothing.
+
+2. **Report the consolidated plan + gaps to the user**, per ticket. A ticket with zero gaps is a
+   candidate to dispatch; a ticket with gaps is **held** until they are resolved.
+
+3. **Resolve every gap interactively with the user.** For each raised item, take exactly one path:
+   - **Clarification** the user answers verbally → record it as *Resolved context* to inject into the
+     dispatch prompt (§5). No doc edit needed.
+   - **Requirement / contract / passed-stage gap** (needs a doc or contract change) → do **not** edit
+     passed-stage docs or frozen contracts here. Route it through `/requirement` (or `/bug`). Keep the
+     ticket **held**; it becomes eligible in a later wave once the change lands.
+   - **Acceptance-criteria edit** → allowed **only with the user's explicit consent**, and only to the
+     ticket file, made now before dispatch. Never edit acceptance criteria silently, without consent,
+     or inside a headless session. After editing, re-confirm the ticket is still eligible.
+
+4. **Classify the outcome** and report it:
+   - **Validated-clean** = no open gaps (any clarifications captured as Resolved context; any
+     consented acceptance-criteria edits applied). → proceeds to §4.
+   - **Held** = an unresolved gap, a pending `/requirement`, or user chose to defer. → not dispatched;
+     report why.
+
+   Only **validated-clean** tickets continue to §4. If none survive, report the held reasons and stop.
+
+## 4. Prepare a worktree per validated-clean ticket (create-if-missing, never clobber)
 
 Using `git worktree list` to check state, for each `TKT-###`:
 
@@ -56,16 +106,22 @@ Using `git worktree list` to check state, for each `TKT-###`:
 
 Create the log dir once: `.dispatch/wave-<N>/`.
 
-## 4. Launch — smoke-test first, then fan out
+## 5. Launch — smoke-test first, then fan out
 
-Per-ticket prompt (substitute `TKT-###` and the worktree path):
+Only **validated-clean** tickets from §3 are launched. Per-ticket prompt (substitute `TKT-###`, the
+worktree path, and the ticket's *Resolved context* gathered in §3 — omit that block if none):
 
 ```
 /implement TKT-###
 
+--- resolved context (decisions made with the user during pre-dispatch validation) ---
+<verbatim clarifications the user gave for this ticket in §3; treat as authoritative. If empty,
+the ticket had no open questions.>
+
 --- dispatch addendum (headless session; no human can answer prompts) ---
 - You run non-interactively in worktree <path> on branch tkt-###. If you would normally ask
-  the user, make the safe, pipeline-compliant choice, or STOP.
+  the user, make the safe, pipeline-compliant choice, or STOP. Do not re-open questions already
+  answered in the resolved-context block above.
 - WRITE SCOPE (hard): modify ONLY paths inside this ticket's File Ownership block (+ new test
   files it owns). You may NOT edit docs/contracts/** (frozen contracts), docs/contracts/REGISTRY.md,
   docs/design/PDD.md, docs/PIPELINE.md, or any other ticket's file. You may NOT run /requirement.
@@ -91,12 +147,12 @@ Launch each as a **background** process with the worktree as its working directo
 ( cd .claude/worktrees/tkt-### && claude -p "<prompt>" <allowlist> ) > .dispatch/wave-<N>/tkt-###.log 2>&1
 ```
 
-**Smoke test:** launch the **first** auto-dispatchable ticket, wait ~15–20s, read its log. A
+**Smoke test:** launch the **first** validated-clean ticket, wait ~15–20s, read its log. A
 healthy start shows work (reading files / running the ticket), not an immediate crash
 (unknown-command / bad-flag). If it crashed, **stop** and report the log — don't spawn a broken
 wave. If healthy, launch the rest in parallel the same way.
 
-## 5. Monitor, govern, report
+## 6. Monitor, govern, report
 
 1. Print a table immediately: ticket · type · worktree · branch · log · (launched / held / skipped+reason).
 2. As background sessions finish, classify each: **DONE+committed** (ticket DONE and
@@ -119,6 +175,10 @@ wave. If healthy, launch the rest in parallel the same way.
 ## Scope
 
 - Dispatcher only: never edit ticket source/tests, never merge, never push, never run /requirement.
+  The **one** exception is a consented acceptance-criteria edit to a ticket file during §3
+  validation — only with the user's explicit approval, never silently.
+- Plan and validate every candidate with the user (§3) **before** any fan-out. Tickets with
+  unresolved requirement gaps are **held**, not dispatched; route doc/contract gaps to `/requirement`.
 - Contract-definition and contract-change tickets are **held for interactive `/implement`**, not
   auto-dispatched.
 - Merging + cleanup stay manual (reminder above). If nothing is auto-dispatchable or a precondition
