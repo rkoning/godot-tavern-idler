@@ -1,0 +1,25 @@
+{ "guestTypes": [ {
+  "id": "dwarf", "displayName": "Dwarf", "isVip": false,
+  "spriteId": "guest_dwarf",
+  "baseWeight": 10,
+  "attractors": [ { "kind": "menuItem", "id": "ale", "weight": 5 },
+                  { "kind": "roomType", "id": "taproom", "weight": 3 } ],
+  "crowding": { "preference": "loves", "magnitude": 0.3 },
+  "queuePatienceTicks": 300,
+  "blockedWaitTicks": 200,
+  "agenda": [ { "serviceId": "drink", "menuItem": "ale" }, { "serviceId": "meal", "menuItem": null } ],
+  "walletMin": 20, "walletMax": 60,
+  "traits": [ "rowdy", "hearty" ],
+  "vip": null
+}, {
+  "id": "food-critic", "displayName": "Aldous the Critic", "isVip": true,
+  "spriteId": "vip_critic", "baseWeight": 0,
+  "attractors": [], "crowding": { "preference": "hates", "magnitude": 0.5 },
+  "queuePatienceTicks": 250, "blockedWaitTicks": 150,
+  "agenda": [ { "serviceId": "meal", "menuItem": "roast-pheasant" } ],
+  "walletMin": 100, "walletMax": 100,
+  "traits": [ "refined" ],
+  "vip": { "visitChancePerNight": 0.15,
+           "conditions": [ { "kind": "menuHasItem", "id": "roast-pheasant" },
+                           { "kind": "lifetimeAcclaimAtLeast", "value": 50 } ] }
+} ] }

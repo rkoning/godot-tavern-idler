@@ -1,11 +1,11 @@
 # TKT-006: Guests contracts (CON-005, CON-006)
 
-> Status: TODO
+> Status: IN PROGRESS
 > Type: contract-definition
 > Domain: DOM-003 | System: SYS-003
 > Traces to: REQ-002, REQ-008–010, REQ-018, REQ-023–024, REQ-048–055, REQ-092–093, REQ-102–104, REQ-107
 > Blocked by: TKT-003, TKT-004, TKT-005 | Blocks: TKT-007, TKT-008, TKT-009, TKT-014, TKT-020
-> Session: —
+> Session: /implement TKT-006 (2026-07-13, interactive)
 
 ## Goal
 
