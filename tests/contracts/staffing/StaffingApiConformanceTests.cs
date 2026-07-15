@@ -144,21 +144,27 @@ public abstract class StaffingApiConformanceTests
     [Fact]
     public void SpeedFactor_min_over_degraded_closed()
     {
+        // Room requires bartender min 2, max 5. (TKT-030 fix: original assigned 8 into a max-5 room
+        // and refused only 1 — both unsatisfiable vs CON-009; kept every Assign within max and made
+        // the refusals actually cross the min threshold.)
         var h = Prep(StaffScenario.Req(("bartender", 2, 5)));
-        var a = HireOk(h, "bartender");
-        var b = HireOk(h, "bartender");
-        Ok(h.Commands.Assign(a, Bar));
-        Ok(h.Commands.Assign(b, Bar));
-        h.Commands.EvaluateRoomStates();
-        Assert.Equal(1.0, h.Queries.SpeedFactor(Bar), 3);              // staffed == requiredMin
+        var ids = new List<EmployeeId>();
 
-        for (var i = 0; i < 6; i++) Ok(h.Commands.Assign(HireOk(h, "bartender"), Bar));
+        for (var i = 0; i < 2; i++) { var e = HireOk(h, "bartender"); Ok(h.Commands.Assign(e, Bar)); ids.Add(e); }
         h.Commands.EvaluateRoomStates();
-        Assert.Equal(1.5, h.Queries.SpeedFactor(Bar), 3);             // clamped up
+        Assert.Equal(1.0, h.Queries.SpeedFactor(Bar), 3);              // staffed == requiredMin ⇒ 1.0
 
-        h.Commands.SetRefusals(new[] { a }, refusing: true);          // drop below min ⇒ Degraded
+        for (var i = 0; i < 3; i++) { var e = HireOk(h, "bartender"); Ok(h.Commands.Assign(e, Bar)); ids.Add(e); } // → 5 = max
         h.Commands.EvaluateRoomStates();
-        Assert.True(h.Queries.SpeedFactor(Bar) <= 0.8 + 1e-9);       // degraded cap
+        Assert.Equal(1.5, h.Queries.SpeedFactor(Bar), 3);             // over-staffed ⇒ 1.5 cap
+
+        h.Commands.SetRefusals(ids.Take(4).ToArray(), refusing: true); // 1 working < min 2 ⇒ Degraded
+        h.Commands.EvaluateRoomStates();
+        Assert.True(h.Queries.SpeedFactor(Bar) <= 0.8 + 1e-9);        // degraded cap
+
+        h.Commands.SetRefusals(ids.ToArray(), refusing: true);         // 0 working in a required role ⇒ Closed
+        h.Commands.EvaluateRoomStates();
+        Assert.Equal(0.0, h.Queries.SpeedFactor(Bar), 3);             // closed ⇒ 0
     }
 
     // ── REQ-109: room removed orphans assignees ──
