@@ -1,6 +1,6 @@
 # TKT-030: Fix unsatisfiable CON-009 SpeedFactor conformance test (bug)
 
-> Status: IN PROGRESS
+> Status: DONE
 > Type: bug
 > Domain: DOM-005 | System: SYS-005
 > Traces to: CON-009 (REQ-061 speed semantics); REQ-058
@@ -33,14 +33,15 @@ Rewrite the test to keep `Assign`s within max, refuse enough to actually cross b
 
 ## Acceptance criteria
 
-- [ ] Test satisfiable: all `Assign`s within max; refusals cross the min threshold
-- [ ] Covers min-staffed 1.0, over-staffed 1.5 cap, degraded ≤ 0.8, closed 0
-- [ ] Suite compiles; full repo suite green (abstract until TKT-012 subclasses)
-- [ ] Runtime-verified by re-dispatching TKT-012 (recorded here)
-- [ ] contract-compliance passes; BOARD + status updated
+- [x] Test satisfiable: all `Assign`s within max; refusals cross the min threshold
+- [x] Covers min-staffed 1.0, over-staffed 1.5 cap, degraded ≤ 0.8, closed 0
+- [x] Suite compiles; full repo suite green (238 at fix time; 268 after TKT-012 merged)
+- [x] Runtime-verified by re-dispatching TKT-012 — DONE, 268/0/0, the corrected test passes (its `RosterConformanceTests` subclass runs the CON-009 suite)
+- [x] contract-compliance passes; BOARD + status updated
 
 ## Session log
 
 | Date | Event |
 |---|---|
-| 2026-07-13 | Diagnosed (verified: over-max assigns + insufficient refusal); user approved the frozen-conformance edit. Fix applied to `SpeedFactor_min_over_degraded_closed`. |
+| 2026-07-13 | Diagnosed (verified: over-max assigns + insufficient refusal); user approved the frozen-conformance edit. Fix applied to `SpeedFactor_min_over_degraded_closed`; compiled, suite green 238. Committed 514c521. |
+| 2026-07-13 | **Runtime-verified:** TKT-012 re-dispatched off the corrected `main` → DONE, full suite **268/0/0**, the corrected test passes. **COMPLIANCE:** test-only correction; CON-009.md interface/semantics untouched, no version bump; ownership limited to the granted suite file. **VERDICT: COMPLIANT.** Status → DONE. |
