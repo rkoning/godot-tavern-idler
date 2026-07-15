@@ -49,3 +49,12 @@ A stage's outputs may not be created until `docs/PIPELINE.md` shows the prior ga
 <!-- HARNESS:END -->
 
 <!-- Project-specific instructions go below this line and survive /harness:init refresh. -->
+
+## Environment — Windows + PowerShell
+
+This project is developed on **Windows** with **PowerShell (5.1)** as the primary shell. Use only PowerShell-supported syntax and commands. Do NOT reach for Linux/macOS/bash idioms.
+
+- No bash heredocs (`<<'EOF'`), no `$(...)` command substitution in the bash sense, no `&&`/`||` chaining — use `;` and `if ($?) { ... }`.
+- No POSIX tools like `printf`, `cat <<`, `/dev/null`, forward-slash-only paths. Use PowerShell equivalents (`Out-File`, `$null`, `Join-Path`, etc.).
+- For multi-line strings (e.g. commit messages) use a here-string `@'...'@` written to a file, then `git commit -F <file>`. Note `Out-File -Encoding utf8` adds a BOM; use `utf8NoBOM` (PS 6+) or `[IO.File]::WriteAllText(...)` if a clean file is needed.
+- Paths use `K:\Projects\godot-tavern-idler\...` (backslashes) or forward slashes where the tool accepts them — but stay Windows-native.
