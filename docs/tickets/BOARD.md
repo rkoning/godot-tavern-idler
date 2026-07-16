@@ -8,7 +8,7 @@
 | TKT-004 | Staffing contracts (CON-009, CON-010) | contract-definition | DOM-005 | DONE | TKT-003 | /implement TKT-004 (2026-07-13) |
 | TKT-005 | Traits contracts (CON-011, CON-012) | contract-definition | DOM-006 | DONE | TKT-001 | /implement TKT-005 (2026-07-13) |
 | TKT-006 | Guests contracts (CON-005, CON-006) | contract-definition | DOM-003 | DONE | TKT-003, TKT-004, TKT-005 | /implement TKT-006 (2026-07-15) |
-| TKT-007 | Economy contracts (CON-007, CON-008) | contract-definition | DOM-004 | TODO | TKT-003, TKT-006 | — |
+| TKT-007 | Economy contracts (CON-007, CON-008) | contract-definition | DOM-004 | DONE | TKT-003, TKT-006 | /implement TKT-007 (2026-07-16) |
 | TKT-008 | Progression contracts (CON-013, CON-014) | contract-definition | DOM-007 | TODO | TKT-003, TKT-006, TKT-007 | — |
 | TKT-009 | App & Save contracts (CON-016, CON-017) | contract-definition | app layer (cross-domain) | TODO | TKT-002, TKT-003, TKT-004, TKT-005, TKT-006, TKT-007, TKT-008 | — |
 | TKT-010 | Cycle domain implementation (NightCycle FSM) | implementation | DOM-002 | DONE | TKT-002 | — |

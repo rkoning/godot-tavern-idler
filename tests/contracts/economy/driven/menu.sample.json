@@ -1,0 +1,8 @@
+{
+  "menuItems": [
+    { "id": "ale",            "displayName": "Ale",            "category": "Drink",
+      "salePrice": 4,  "restockCost": 1,  "traits": [ "humble", "alcoholic" ] },
+    { "id": "roast-pheasant", "displayName": "Roast Pheasant", "category": "Food",
+      "salePrice": 25, "restockCost": 10, "traits": [ "refined" ] }
+  ]
+}
