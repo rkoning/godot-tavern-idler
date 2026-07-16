@@ -15,7 +15,7 @@
 | TKT-011 | Structure domain implementation (Tavern aggregate) | implementation | DOM-001 | DONE | TKT-002, TKT-003 | /implement TKT-011 (2026-07-13) |
 | TKT-012 | Staffing domain implementation (Roster) | implementation | DOM-005 | DONE | TKT-002, TKT-004 | /implement TKT-012 (2026-07-15) |
 | TKT-013 | Traits domain implementation (rule engine) | implementation | DOM-006 | DONE | TKT-002, TKT-005 | /implement TKT-013 (2026-07-13) |
-| TKT-014 | Guests domain implementation (agent simulation) | implementation | DOM-003 | TODO | TKT-002, TKT-006 | — |
+| TKT-014 | Guests domain implementation (agent simulation) | implementation | DOM-003 | DONE | TKT-002, TKT-006 | /implement TKT-014 (2026-07-16) |
 | TKT-015 | Economy domain implementation (ledger + settlement) | implementation | DOM-004 | TODO | TKT-002, TKT-007 | — |
 | TKT-016 | Progression domain implementation (milestones, shop, prestige, venues) | implementation | DOM-007 | TODO | TKT-002, TKT-008 | — |
 | TKT-017 | RNG adapter (CON-015 implementation) | implementation | adapters (shared) | DONE | TKT-001 | /implement TKT-017 (2026-07-13) |
